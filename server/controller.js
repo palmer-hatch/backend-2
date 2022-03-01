@@ -9,15 +9,20 @@ module.exports = {
         res.status(200).send(houses)
     },
     createHouse: (req,res) => {
-       let newHouse = req.body
+       if (!req.body.address || !req.body.price || !req.body.imageURL){
+           res.status(400).send("missing peice of info")
+     
+       } else{let newHouse = req.body
        
        newHouse.id = globalID
+        
+
        houses.push(newHouse)
 
        res.status(200).send(houses)
 
        globalID++
-
+       }
     },
     updateHouse: (req,res) => {
         let {id} = req.params
@@ -28,15 +33,16 @@ module.exports = {
         if(type === 'plus'){
             houses[index].price += 10000
             res.status(200).send(houses)
-        }else if (type === 'minus' && houses[index].price === 0 ) {
-            res.status(400).send('houses cannot go below $0')
+        }else if (type === 'minus' && houses[index].price < 10000 ) {
+            // res.status(400).send('houses cannot go below $0')
+            alert('not allowed')
         } else if (type === 'minus'){
             houses[index].price -= 10000
             res.status(200).send(houses)
         }
         
         else {
-            res.status(400).send(houses)
+            res.status(400).send('does not work')
         }
 
     },
